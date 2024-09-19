@@ -1,0 +1,30 @@
+[
+    {
+        "name": "hello",
+        "description": "Diz olá!"
+    },
+    {
+        "name": "server",
+        "description": "Exibe informações do servidor"
+    },
+    {
+        "name": "user_info",
+        "description": "Exibe informações do usuário"
+    },
+    {
+        "name": "register",
+        "description": "Registra um novo usuário"
+    },
+    {
+        "name": "xp",
+        "description": "Obtém o XP do usuário"
+    },
+    {
+        "name": "money_info",
+        "description": "Obtém o dinheiro do usuário"
+    },
+    {
+        "name": "daily_money",
+        "description": "Adiciona dinheiro ao usuário"
+    }
+]
