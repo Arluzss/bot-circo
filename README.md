@@ -1,6 +1,6 @@
-# BotTeste
+# BotCibernetico
 
-BotTeste é um bot do Discord que oferece diversas funcionalidades para melhorar a experiência do seu servidor. Entre os principais recursos estão:
+BotCibernetico é um bot do Discord que oferece diversas funcionalidades para melhorar a experiência do seu servidor. Entre os principais recursos estão:
 
 - **Sistema de XP**: Ganhe experiência ao interagir no servidor.
 - **Pontos Virtuais**: Acumule pontos e troque por recompensas.
