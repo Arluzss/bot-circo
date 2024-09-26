@@ -25,8 +25,9 @@ CREATE TABLE IF NOT EXISTS bank (
     users_id BIGINT,
     guild_id BIGINT,
     balance INTEGER DEFAULT 0,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (users_id, guild_id) REFERENCES users(users_id, guild_id)
+    date TIMESTAMP DEFAULT NULL,
+    FOREIGN KEY (users_id, guild_id) REFERENCES users(users_id, guild_id),
+    UNIQUE (users_id, guild_id)  -- Garante que a combinação seja única
 );
 `;
 

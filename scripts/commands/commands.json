@@ -26,5 +26,13 @@
     {
         "name": "daily_money",
         "description": "Adiciona dinheiro ao usuário"
+    },
+    {
+        "name": "offer",
+        "description": "Vá para o canal desejado para ativar o envio de ofertas"
+    },
+    {
+        "name": "active_events",
+        "description": "Ativa eventos no canal"
     }
 ]

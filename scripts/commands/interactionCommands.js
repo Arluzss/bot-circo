@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../../.env' });
+require('dotenv').config({ path: '../../dev.env' });
 
 const { REST, Routes } = require('discord.js');
 const jsonCommands = require('./commands.json');
@@ -19,7 +19,5 @@ async function commands(guild_id){
         console.error(error);
     }
 }
-
-commands(process.env.GUILD_ID);
 
 exports.commands = commands;

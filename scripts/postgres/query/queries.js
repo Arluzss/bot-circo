@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../../../.env' });
+require('dotenv').config({ path: '../../../dev.env' });
 const pool = require('../postgres.js');
 
 async function registerGuild(guild_id, name) {
@@ -23,8 +23,8 @@ async function registerUser(user_id, name_user, guild_id) {
 
   try {
     const sql = `
-    INSERT INTO users (users_id, name, xp, bank, guild_id)
-    SELECT $1, $2, 0, 0, $3
+    INSERT INTO users (users_id, name, xp, guild_id)
+    SELECT $1, $2, 0, $3
     WHERE NOT EXISTS (
       SELECT 1 FROM users WHERE users_id = $1 AND guild_id = $3
     ) AND EXISTS (
@@ -46,11 +46,12 @@ async function getUserXP(user_id, guild_id) {
     const sql = `
     SELECT xp FROM users WHERE users_id = $1 AND guild_id = $2;
     `;
-    
+
     const result = await client.query(sql, [user_id, guild_id]);
     return result.rows[0].xp;
   } catch (err) {
     console.error('Erro ao executar o arquivo SQL', err.stack);
+    throw Error('1', err.stack);
   } finally {
     client.release();
   }
@@ -75,10 +76,9 @@ async function createBank(user_id, guild_id) {
   try {
     const sql = `
     INSERT INTO bank (users_id, guild_id, balance)
-    SELECT $1, $2, 0
-    WHERE NOT EXISTS (
-      SELECT 1 FROM bank WHERE users_id = $1 AND guild_id = $2
-    );
+    VALUES ($1, $2, 0)
+    ON CONFLICT (users_id, guild_id)
+    DO NOTHING;
     `;
     await client.query(sql, [user_id, guild_id]);
   } catch (err) {
@@ -98,7 +98,7 @@ async function getBalance(user_id, guild_id) {
 
     return "Seu saldo atual: " + result.rows[0].balance;
   } catch (err) {
-    console.error('Erro ao executar o arquivo SQL', err.stack);
+    throw Error('1', err.stack);
   } finally {
     client.release();
   }
@@ -112,16 +112,17 @@ async function dailyMoney(user_id, guild_id) {
     SELECT date FROM bank WHERE users_id = $1 AND guild_id = $2;
     `;
     const result = await client.query(checkSql, [user_id, guild_id]);
-
     if (result.rows.length > 0) {
       const lastDaily = result.rows[0].date;
       const now = new Date();
       const lastDailyDate = new Date(lastDaily);
       const hoursDifference = Math.abs(now - lastDailyDate) / 36e5;
-
+      console.log("sd");
       if (hoursDifference < 24) {
         throw new Error('Já recebeu suas moedas diárias hoje');
       }
+    }else{
+      throw new Error('1');
     }
 
     const updateSql = `
@@ -132,6 +133,20 @@ async function dailyMoney(user_id, guild_id) {
   } catch (err) {
     console.error('Erro ao executar o arquivo SQL', err.stack);
     throw err;
+  } finally {
+    client.release();
+  }
+}
+
+async function addMoney(user_id, guild_id, money) {
+  const client = await pool.connect();
+  try {
+    const sql = `
+    UPDATE bank SET balance = balance + $1 WHERE users_id = $2 AND guild_id = $3;
+    `;
+    await client.query(sql, [money, user_id, guild_id]);
+  } catch (err) {
+    console.error('Erro ao executar o arquivo SQL', err.stack);
   } finally {
     client.release();
   }
@@ -157,5 +172,6 @@ module.exports = {
   addXP,
   createBank,
   dailyMoney,
-  getBalance
+  getBalance,
+  addMoney
 };
