@@ -6,4 +6,4 @@ BotCibernetico é um bot do Discord que oferece diversas funcionalidades para me
 - **Pontos Virtuais**: Acumule pontos e troque por recompensas.
 - **Criador de Eventos**: Organize e gerencie eventos facilmente.
 
-Adicione o Cibernetico ao seu servidor e aproveite todas essas funcionalidades!
+Adicione o BotTeste ao seu servidor e aproveite todas essas funcionalidades!
